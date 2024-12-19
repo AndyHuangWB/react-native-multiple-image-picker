@@ -28,9 +28,7 @@ const Picker = NitroModules.createHybridObject<MultipleImagePicker>(
   'MultipleImagePicker'
 )
 
-type IPromisePicker<T extends Config> = T['selectMode'] extends 'single'
-  ? Result
-  : Result[]
+type IPromisePicker<T extends Config> = Result[]
 
 export async function openPicker<T extends Config>(
   conf: T

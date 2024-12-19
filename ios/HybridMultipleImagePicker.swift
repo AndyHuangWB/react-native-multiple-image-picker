@@ -40,12 +40,23 @@ class HybridMultipleImagePicker: HybridMultipleImagePickerSpec {
 
                 // check crop for single
                 if let asset = pickerResult.photoAssets.first, config.selectMode == .single, config.crop != nil, asset.mediaType == .photo, asset.editedResult?.url == nil {
+                    var editConfig = EditorConfiguration()
+                    editConfig.buttonType = .top
                     // open crop
-                    Photo.edit(asset: .init(type: .photoAsset(asset)), config: self.config.editor, sender: controller) { editedResult, _ in
+                    Photo.edit(asset: .init(type: .photoAsset(asset)), config: editConfig, sender: controller) { editedResult, _ in
 
                         if let photoAsset = pickerResult.photoAssets.first, let result = editedResult.result {
                             photoAsset.editedResult = .some(result)
 
+                            Task {
+                                let resultData = try await self.getResult(photoAsset)
+
+                                DispatchQueue.main.async {
+                                    resolved([resultData])
+                                    controller.dismiss(true)
+                                }
+                            }
+                        } else if let photoAsset = pickerResult.photoAssets.first {
                             Task {
                                 let resultData = try await self.getResult(photoAsset)
 
