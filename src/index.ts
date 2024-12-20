@@ -28,11 +28,11 @@ const Picker = NitroModules.createHybridObject<MultipleImagePicker>(
   'MultipleImagePicker'
 )
 
-type IPromisePicker<T extends Config> = Result[]
+type IPromisePicker = Result[]
 
 export async function openPicker<T extends Config>(
   conf: T
-): Promise<IPromisePicker<T>> {
+): Promise<IPromisePicker> {
   return new Promise((resolved, rejected) => {
     const config = { ...defaultOptions, ...conf } as NitroConfig
     config.primaryColor = processColor(config.primaryColor) as any
@@ -54,7 +54,7 @@ export async function openPicker<T extends Config>(
     return Picker.openPicker(
       config,
       (result: Result[]) => {
-        resolved(result as IPromisePicker<T>)
+        resolved(result as IPromisePicker)
       },
       (reject: number) => {
         rejected(reject)
