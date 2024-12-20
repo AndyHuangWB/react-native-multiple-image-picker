@@ -39,8 +39,12 @@ class HybridMultipleImagePicker: HybridMultipleImagePickerSpec {
                 controller.autoDismiss = false
 
                 // check crop for single
-                if let asset = pickerResult.photoAssets.first, config.selectMode == .single, config.crop != nil, asset.mediaType == .photo, asset.editedResult?.url == nil {
+                if let asset = pickerResult.photoAssets.first, config.selectMode == .single, asset.mediaType == .photo, asset.editedResult?.url == nil {
                     var editConfig = EditorConfiguration()
+                    editConfig.toolsView = .init(toolOptions: [.init(imageType: PickerConfiguration.default.editor.imageResource.editor.tools.cropSize, type: .cropSize),
+                                       .init(imageType: PickerConfiguration.default.editor.imageResource.editor.tools.graffiti, type: .graffiti),
+                                       .init(imageType: PickerConfiguration.default.editor.imageResource.editor.tools.text, type: .text),
+                                       .init(imageType: PickerConfiguration.default.editor.imageResource.editor.tools.mosaic, type: .mosaic)])
                     editConfig.buttonType = .top
                     // open crop
                     Photo.edit(asset: .init(type: .photoAsset(asset)), config: editConfig, sender: controller) { editedResult, _ in

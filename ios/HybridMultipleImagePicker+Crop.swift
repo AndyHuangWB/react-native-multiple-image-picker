@@ -25,9 +25,15 @@ extension HybridMultipleImagePicker {
             asset = .init(type: .photoAsset(.init(localIdentifier: image)))
         }
 
-        let cropOption = PickerCropConfig(circle: config.circle, ratio: config.ratio, defaultRatio: config.defaultRatio, freeStyle: config.freeStyle)
+        // let cropOption = PickerCropConfig(circle: config.circle, ratio: config.ratio, defaultRatio: config.defaultRatio, freeStyle: config.freeStyle)
 
-        var editConfig = setCropConfig(cropOption)
+        var editConfig = EditorConfiguration()
+        editConfig.toolsView = .init(toolOptions: [.init(imageType: PickerConfiguration.default.editor.imageResource.editor.tools.cropSize, type: .cropSize),
+                                               .init(imageType: PickerConfiguration.default.editor.imageResource.editor.tools.graffiti, type: .graffiti),
+                                               .init(imageType: PickerConfiguration.default.editor.imageResource.editor.tools.text, type: .text),
+                                               .init(imageType: PickerConfiguration.default.editor.imageResource.editor.tools.mosaic, type: .mosaic)])
+        editConfig.buttonType = .top
+
 
         editConfig.languageType = setLocale(language: config.language)
 
